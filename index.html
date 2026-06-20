@@ -1,0 +1,1080 @@
+jsx
+// App.jsx - Componente Principal
+import React, { useState } from 'react';
+// ==================== DADOS DA APLICAÇÃO ====================
+const coursesData = {
+  hero: {
+    title: "Fundamentos de Contabilidade",
+    subtitle: "Módulo Atual: Introdução à Contabilidade",
+    description: "Domine os conceitos essenciais da contabilidade através de uma jornada interativa e gamificada. Aprenda sobre patrimônio, demonstrações financeiras e análise contábil de forma prática e envolvente.",
+    backgroundImage: "[images.unsplash.com](https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1920&q=80)"
+  },
+  modules: [
+    {
+      id: 1,
+      title: "Introdução à Contabilidade",
+      cards: [
+        {
+          id: 101,
+          name: "Patrimônio",
+          preview: "Conjunto de bens, direitos e obrigações de uma entidade.",
+          progress: 85,
+          content: {
+            summary: "O Patrimônio representa o conjunto de bens, direitos e obrigações vinculados a uma pessoa física ou jurídica. É a base fundamental da contabilidade e representa a situação econômico-financeira da entidade.",
+            keyPoints: [
+              "Bens: Tudo que a empresa possui (máquinas, veículos, estoque)",
+              "Direitos: Valores a receber de terceiros",
+              "Obrigações: Dívidas com terceiros"
+            ],
+            formula: "PATRIMÔNIO = BENS + DIREITOS - OBRIGAÇÕES"
+          },
+          quiz: [
+            { question: "O que compõe o patrimônio de uma empresa?", options: ["Apenas bens", "Bens e direitos", "Bens, direitos e obrigações", "Apenas obrigações"], correct: 2 },
+            { question: "Uma máquina da empresa é considerada:", options: ["Direito", "Obrigação", "Bem", "Patrimônio Líquido"], correct: 2 },
+            { question: "Contas a receber de clientes são:", options: ["Bens", "Direitos", "Obrigações", "Despesas"], correct: 1 }
+          ]
+        },
+        {
+          id: 102,
+          name: "Ativo",
+          preview: "Recursos controlados pela entidade com expectativa de benefícios futuros.",
+          progress: 60,
+          content: {
+            summary: "O Ativo representa todos os recursos controlados pela entidade como resultado de eventos passados e dos quais se espera que resultem benefícios econômicos futuros.",
+            keyPoints: [
+              "Ativo Circulante: Realizável em até 12 meses",
+              "Ativo Não Circulante: Realizável após 12 meses",
+              "Inclui: Caixa, Estoques, Imóveis, Máquinas"
+            ],
+            formula: "ATIVO = PASSIVO + PATRIMÔNIO LÍQUIDO"
+          },
+          quiz: [
+            { question: "O Ativo Circulante é realizável em:", options: ["Até 6 meses", "Até 12 meses", "Após 12 meses", "Qualquer prazo"], correct: 1 },
+            { question: "Qual item é um Ativo Não Circulante?", options: ["Caixa", "Estoque", "Imóvel para uso", "Duplicatas a receber"], correct: 2 },
+            { question: "O Ativo representa:", options: ["Dívidas da empresa", "Recursos controlados", "Lucros acumulados", "Despesas pagas"], correct: 1 }
+          ]
+        },
+        {
+          id: 103,
+          name: "Passivo",
+          preview: "Obrigações presentes derivadas de eventos passados.",
+          progress: 45,
+          content: {
+            summary: "O Passivo representa as obrigações presentes da entidade, derivadas de eventos passados, cuja liquidação se espera que resulte na saída de recursos capazes de gerar benefícios econômicos.",
+            keyPoints: [
+              "Passivo Circulante: Exigível em até 12 meses",
+              "Passivo Não Circulante: Exigível após 12 meses",
+              "Inclui: Fornecedores, Empréstimos, Salários a pagar"
+            ],
+            formula: "PASSIVO = ATIVO - PATRIMÔNIO LÍQUIDO"
+          },
+          quiz: [
+            { question: "Fornecedores a pagar são classificados como:", options: ["Ativo", "Passivo", "Patrimônio Líquido", "Receita"], correct: 1 },
+            { question: "Um empréstimo de longo prazo é:", options: ["Passivo Circulante", "Passivo Não Circulante", "Ativo", "Despesa"], correct: 1 },
+            { question: "O Passivo representa:", options: ["Bens da empresa", "Direitos da empresa", "Obrigações da empresa", "Lucros da empresa"], correct: 2 }
+          ]
+        },
+        {
+          id: 104,
+          name: "Patrimônio Líquido",
+          preview: "Interesse residual nos ativos após dedução dos passivos.",
+          progress: 30,
+          content: {
+            summary: "O Patrimônio Líquido é o interesse residual nos ativos da entidade após deduzidos todos os seus passivos. Representa os recursos próprios da empresa.",
+            keyPoints: [
+              "Capital Social: Investimento dos sócios",
+              "Reservas: Lucros retidos para finalidades específicas",
+              "Lucros/Prejuízos Acumulados: Resultado não distribuído"
+            ],
+            formula: "PL = ATIVO - PASSIVO"
+          },
+          quiz: [
+            { question: "O Capital Social representa:", options: ["Dívidas com bancos", "Investimento dos sócios", "Lucros do período", "Despesas operacionais"], correct: 1 },
+            { question: "A fórmula do PL é:", options: ["Ativo + Passivo", "Ativo - Passivo", "Passivo - Ativo", "Receitas - Despesas"], correct: 1 },
+            { question: "Reserva de Lucros é parte do:", options: ["Ativo", "Passivo", "Patrimônio Líquido", "DRE"], correct: 2 }
+          ]
+        },
+        {
+          id: 105,
+          name: "Equação Fundamental",
+          preview: "A base de toda a contabilidade: Ativo = Passivo + PL",
+          progress: 20,
+          content: {
+            summary: "A Equação Fundamental da Contabilidade estabelece que o Ativo é sempre igual à soma do Passivo com o Patrimônio Líquido. Esta equação deve estar sempre em equilíbrio.",
+            keyPoints: [
+              "Todo débito corresponde a um crédito de igual valor",
+              "O total de aplicações igual ao total de origens",
+              "Base do método das partidas dobradas"
+            ],
+            formula: "ATIVO = PASSIVO + PATRIMÔNIO LÍQUIDO"
+          },
+          quiz: [
+            { question: "A equação fundamental é:", options: ["A = P - PL", "A = P + PL", "A + P = PL", "A - P = PL"], correct: 1 },
+            { question: "Se Ativo = 100 e Passivo = 60, o PL é:", options: ["160", "40", "60", "100"], correct: 1 },
+            { question: "O método das partidas dobradas garante:", options: ["Lucro sempre positivo", "Equilíbrio patrimonial", "Ausência de dívidas", "Aumento do capital"], correct: 1 }
+          ]
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: "Fatos Contábeis e Variações",
+      cards: [
+        {
+          id: 201,
+          name: "Receitas",
+          preview: "Aumentos nos benefícios econômicos durante o período contábil.",
+          progress: 70,
+          content: {
+            summary: "Receitas são aumentos nos benefícios econômicos durante o período contábil, sob a forma de entrada de recursos ou aumento de ativos, que resultam em aumento do patrimônio líquido.",
+            keyPoints: [
+              "Receita Operacional: Atividade principal da empresa",
+              "Receita Não Operacional: Atividades secundárias",
+              "Reconhecimento: Quando ganhas, não quando recebidas"
+            ],
+            formula: "RECEITA LÍQUIDA = RECEITA BRUTA - DEDUÇÕES"
+          },
+          quiz: [
+            { question: "Receitas aumentam o:", options: ["Passivo", "Ativo apenas", "Patrimônio Líquido", "Custo"], correct: 2 },
+            { question: "Venda de mercadorias é receita:", options: ["Não operacional", "Operacional", "Financeira", "Extraordinária"], correct: 1 },
+            { question: "O regime de competência reconhece receita quando:", options: ["Recebida", "Ganha", "Paga", "Contratada"], correct: 1 }
+          ]
+        },
+        {
+          id: 202,
+          name: "Despesas",
+          preview: "Decréscimos nos benefícios econômicos durante o período.",
+          progress: 55,
+          content: {
+            summary: "Despesas são decréscimos nos benefícios econômicos durante o período contábil, sob a forma de saída de recursos ou redução de ativos, que resultam em diminuição do patrimônio líquido.",
+            keyPoints: [
+              "Despesas Operacionais: Relacionadas à atividade principal",
+              "Despesas Administrativas: Gestão e administração",
+              "Despesas Financeiras: Juros e encargos bancários"
+            ],
+            formula: "RESULTADO = RECEITAS - DESPESAS"
+          },
+          quiz: [
+            { question: "Despesas diminuem o:", options: ["Ativo apenas", "Passivo", "Patrimônio Líquido", "Capital Social"], correct: 2 },
+            { question: "Salário dos funcionários é:", options: ["Receita", "Ativo", "Despesa", "Passivo"], correct: 2 },
+            { question: "Aluguel do escritório é despesa:", options: ["Financeira", "Administrativa", "Comercial", "Tributária"], correct: 1 }
+          ]
+        },
+        {
+          id: 203,
+          name: "CMV",
+          preview: "Custo das Mercadorias Vendidas - essencial para o comércio.",
+          progress: 40,
+          content: {
+            summary: "O Custo das Mercadorias Vendidas (CMV) representa o valor de aquisição das mercadorias que foram vendidas durante o período. É fundamental para calcular o lucro bruto.",
+            keyPoints: [
+              "CMV = EI + Compras - EF",
+              "EI = Estoque Inicial",
+              "EF = Estoque Final"
+            ],
+            formula: "CMV = ESTOQUE INICIAL + COMPRAS - ESTOQUE FINAL"
+          },
+          quiz: [
+            { question: "CMV significa:", options: ["Conta de Mercadorias Vendidas", "Custo das Mercadorias Vendidas", "Compra de Mercadorias e Vendas", "Controle de Mercadorias"], correct: 1 },
+            { question: "Se EI=100, Compras=500, EF=150, o CMV é:", options: ["550", "450", "650", "750"], correct: 1 },
+            { question: "O CMV é usado para calcular:", options: ["Lucro Líquido", "Lucro Bruto", "Patrimônio Líquido", "Passivo"], correct: 1 }
+          ]
+        },
+        {
+          id: 204,
+          name: "Fato Permutativo",
+          preview: "Alterações qualitativas no patrimônio sem alterar o PL.",
+          progress: 25,
+          content: {
+            summary: "Fatos Permutativos são aqueles que provocam alterações qualitativas no patrimônio, sem modificar o valor do Patrimônio Líquido. Há permuta entre elementos patrimoniais.",
+            keyPoints: [
+              "Não altera o valor total do PL",
+              "Exemplo: Compra de veículo à vista",
+              "Troca entre elementos do ativo ou passivo"
+            ],
+            formula: "ANTES DO FATO: A = P + PL → DEPOIS: A = P + PL (mesmo valor)"
+          },
+          quiz: [
+            { question: "Fato permutativo altera o PL?", options: ["Sempre aumenta", "Sempre diminui", "Não altera", "Às vezes altera"], correct: 2 },
+            { question: "Compra de mercadorias à vista é fato:", options: ["Modificativo", "Permutativo", "Misto", "Nenhum"], correct: 1 },
+            { question: "Pagamento de dívida com dinheiro do caixa é:", options: ["Modificativo aumentativo", "Modificativo diminutivo", "Permutativo", "Misto"], correct: 2 }
+          ]
+        },
+        {
+          id: 205,
+          name: "Fato Modificativo",
+          preview: "Alterações quantitativas que modificam o valor do PL.",
+          progress: 15,
+          content: {
+            summary: "Fatos Modificativos são aqueles que provocam alterações quantitativas no patrimônio, modificando o valor do Patrimônio Líquido para mais (aumentativo) ou para menos (diminutivo).",
+            keyPoints: [
+              "Aumentativo: Aumenta o PL (receitas)",
+              "Diminutivo: Diminui o PL (despesas)",
+              "Altera a situação líquida patrimonial"
+            ],
+            formula: "MODIFICATIVO = ENVOLVE RECEITA OU DESPESA"
+          },
+          quiz: [
+            { question: "Recebimento de receita é fato:", options: ["Permutativo", "Modificativo aumentativo", "Modificativo diminutivo", "Misto"], correct: 1 },
+            { question: "Pagamento de despesa de aluguel é:", options: ["Permutativo", "Modificativo aumentativo", "Modificativo diminutivo", "Misto"], correct: 2 },
+            { question: "Fato modificativo sempre envolve:", options: ["Apenas ativo", "Apenas passivo", "Receita ou despesa", "Capital social"], correct: 2 }
+          ]
+        }
+      ]
+    },
+    {
+      id: 3,
+      title: "Relatórios Financeiros Essenciais",
+      cards: [
+        {
+          id: 301,
+          name: "Balanço Patrimonial",
+          preview: "Demonstração estática da posição patrimonial e financeira.",
+          progress: 50,
+          content: {
+            summary: "O Balanço Patrimonial é a demonstração contábil que evidencia, de forma qualitativa e quantitativa, a posição patrimonial e financeira da entidade em determinada data.",
+            keyPoints: [
+              "Lado Esquerdo: Ativo (aplicações)",
+              "Lado Direito: Passivo + PL (origens)",
+              "Demonstração estática (fotografia)"
+            ],
+            formula: "ATIVO TOTAL = PASSIVO TOTAL + PATRIMÔNIO LÍQUIDO"
+          },
+          quiz: [
+            { question: "O Balanço Patrimonial é uma demonstração:", options: ["Dinâmica", "Estática", "Temporal", "Projetada"], correct: 1 },
+            { question: "O lado esquerdo do BP mostra:", options: ["Passivo", "PL", "Ativo", "Receitas"], correct: 2 },
+            { question: "O BP deve ser elaborado ao final de cada:", options: ["Mês obrigatoriamente", "Exercício social", "Semana", "Trimestre apenas"], correct: 1 }
+          ]
+        },
+        {
+          id: 302,
+          name: "DRE",
+          preview: "Demonstração do Resultado do Exercício - apuração do lucro/prejuízo.",
+          progress: 35,
+          content: {
+            summary: "A Demonstração do Resultado do Exercício (DRE) é o relatório contábil que evidencia a formação do resultado líquido do exercício, confrontando receitas e despesas.",
+            keyPoints: [
+              "Estrutura vertical (de cima para baixo)",
+              "Receita Bruta → Lucro Líquido",
+              "Demonstração dinâmica (período)"
+            ],
+            formula: "LUCRO LÍQUIDO = RECEITAS - CUSTOS - DESPESAS - IMPOSTOS"
+          },
+          quiz: [
+            { question: "A DRE é uma demonstração:", options: ["Estática", "Dinâmica", "Patrimonial", "Financeira apenas"], correct: 1 },
+            { question: "A DRE evidencia:", options: ["Posição patrimonial", "Fluxo de caixa", "Resultado do exercício", "Mutações do PL"], correct: 2 },
+            { question: "O primeiro item da DRE geralmente é:", options: ["Lucro Líquido", "Receita Bruta", "CMV", "Despesas"], correct: 1 }
+          ]
+        },
+        {
+          id: 303,
+          name: "DMPL",
+          preview: "Demonstração das Mutações do Patrimônio Líquido.",
+          progress: 20,
+          content: {
+            summary: "A DMPL evidencia as alterações ocorridas nas contas do Patrimônio Líquido durante o exercício social, explicando as variações em cada componente.",
+            keyPoints: [
+              "Mostra origem e aplicação dos recursos próprios",
+              "Inclui: Capital, Reservas, Lucros/Prejuízos",
+              "Obrigatória para S/A de capital aberto"
+            ],
+            formula: "PL FINAL = PL INICIAL + AUMENTOS - REDUÇÕES"
+          },
+          quiz: [
+            { question: "DMPL significa:", options: ["Demonstração de Movimento do PL", "Demonstração das Mutações do PL", "Demonstração Mensal do PL", "Documento de Movimentação do PL"], correct: 1 },
+            { question: "A DMPL mostra variações no:", options: ["Ativo", "Passivo", "Patrimônio Líquido", "Resultado"], correct: 2 },
+            { question: "Aumento de capital social aparece na:", options: ["DRE", "DMPL", "DFC", "Notas explicativas apenas"], correct: 1 }
+          ]
+        },
+        {
+          id: 304,
+          name: "Fluxo de Caixa",
+          preview: "DFC - movimentação de entradas e saídas de caixa.",
+          progress: 10,
+          content: {
+            summary: "A Demonstração dos Fluxos de Caixa (DFC) evidencia as modificações ocorridas no caixa e equivalentes de caixa, separando por atividades operacionais, de investimento e de financiamento.",
+            keyPoints: [
+              "Atividades Operacionais: Dia a dia da empresa",
+              "Atividades de Investimento: Ativos de longo prazo",
+              "Atividades de Financiamento: Recursos de terceiros/próprios"
+            ],
+            formula: "CAIXA FINAL = CAIXA INICIAL + ENTRADAS - SAÍDAS"
+          },
+          quiz: [
+            { question: "A DFC é elaborada pelo método:", options: ["Apenas direto", "Apenas indireto", "Direto ou indireto", "Misto obrigatório"], correct: 2 },
+            { question: "Compra de máquinas é atividade de:", options: ["Operacional", "Investimento", "Financiamento", "Nenhuma"], correct: 1 },
+            { question: "Empréstimo bancário recebido é atividade de:", options: ["Operacional", "Investimento", "Financiamento", "Administrativa"], correct: 2 }
+          ]
+        }
+      ]
+    }
+  ]
+};
+// ==================== COMPONENTES ====================
+// Header/Navbar
+const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  return (
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-black/95 shadow-lg' : 'bg-gradient-to-b from-black/80 to-transparent'}`}>
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
+          <div className="flex items-center gap-2">
+            <div className="text-red-600 text-2xl md:text-3xl font-black tracking-tighter">
+              CONTÁBIL<span className="text-white">FLIX</span>
+            </div>
+          </div>
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#" className="text-white font-semibold hover:text-gray-300 transition">Home</a>
+            <a href="#" className="text-gray-300 hover:text-white transition">Módulos</a>
+            <a href="#" className="text-gray-300 hover:text-white transition">Desempenho</a>
+            <a href="#" className="text-gray-300 hover:text-white transition">Simulados</a>
+          </div>
+          {/* Profile & Mobile Menu */}
+          <div className="flex items-center gap-4">
+            {/* Search Icon */}
+            <button className="text-white hover:text-gray-300 transition hidden sm:block">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+            
+            {/* Notifications */}
+            <button className="text-white hover:text-gray-300 transition hidden sm:block relative">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+              </svg>
+              <span className="absolute -top-1 -right-1 bg-red-600 text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+            </button>
+            {/* Profile */}
+            <div className="flex items-center gap-2 cursor-pointer group">
+              <div className="w-8 h-8 rounded bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center">
+                <span className="text-white text-sm font-bold">A</span>
+              </div>
+              <svg className="w-4 h-4 text-white group-hover:rotate-180 transition-transform hidden sm:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+            {/* Mobile Menu Button */}
+            <button 
+              className="md:hidden text-white"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </div>
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-black/95 border-t border-gray-800 py-4">
+            <div className="flex flex-col space-y-4 px-4">
+              <a href="#" className="text-white font-semibold">Home</a>
+              <a href="#" className="text-gray-300">Módulos</a>
+              <a href="#" className="text-gray-300">Desempenho</a>
+              <a href="#" className="text-gray-300">Simulados</a>
+            </div>
+          </div>
+        )}
+      </nav>
+    </header>
+  );
+};
+// Hero Section
+const HeroSection = ({ data }) => {
+  return (
+    <section className="relative h-[85vh] md:h-[90vh] flex items-center">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ 
+            backgroundImage: `url(${data.backgroundImage})`,
+          }}
+        />
+        {/* Gradient Overlays */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-black/50" />
+      </div>
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="max-w-2xl">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-red-600/20 border border-red-600/50 rounded-full px-4 py-1.5 mb-6">
+            <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+            <span className="text-red-400 text-sm font-medium">{data.subtitle}</span>
+          </div>
+          {/* Title */}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white mb-4 leading-tight">
+            {data.title}
+          </h1>
+          {/* Description */}
+          <p className="text-gray-300 text-base sm:text-lg md:text-xl mb-8 leading-relaxed max-w-xl">
+            {data.description}
+          </p>
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <button className="flex items-center justify-center gap-2 bg-white text-black font-bold px-8 py-3 rounded hover:bg-gray-200 transition-colors text-lg">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              Assistir Aula
+            </button>
+            <button className="flex items-center justify-center gap-2 bg-gray-500/50 text-white font-bold px-8 py-3 rounded hover:bg-gray-500/70 transition-colors text-lg backdrop-blur-sm">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Ver Detalhes / Quiz
+            </button>
+          </div>
+          {/* Stats */}
+          <div className="flex items-center gap-6 mt-8 text-sm">
+            <div className="flex items-center gap-2">
+              <span className="text-green-500 font-bold">98%</span>
+              <span className="text-gray-400">Aprovação</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400">2024</span>
+            </div>
+            <div className="flex items-center gap-2 px-2 py-0.5 border border-gray-500 text-gray-400 text-xs">
+              ACADÊMICO
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </section>
+  );
+};
+// Progress Bar Component
+const ProgressBar = ({ progress }) => {
+  const getColor = (value) => {
+    if (value >= 80) return 'bg-green-500';
+    if (value >= 50) return 'bg-yellow-500';
+    if (value >= 25) return 'bg-orange-500';
+    return 'bg-red-500';
+  };
+  return (
+    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-700">
+      <div 
+        className={`h-full ${getColor(progress)} transition-all duration-500`}
+        style={{ width: `${progress}%` }}
+      />
+    </div>
+  );
+};
+// Card Component
+const Card = ({ card, onClick }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  return (
+    <div
+      className={`relative flex-shrink-0 w-48 sm:w-56 md:w-64 aspect-video rounded-md overflow-hidden cursor-pointer transition-all duration-300 ${isHovered ? 'scale-110 z-20 shadow-2xl shadow-black/50' : 'scale-100 z-10'}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => onClick(card)}
+    >
+      {/* Card Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900">
+        {/* Abstract Pattern */}
+        <div className="absolute inset-0 opacity-30">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/30 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-blue-600/20 rounded-full blur-2xl" />
+        </div>
+      </div>
+      {/* Card Content */}
+      <div className="relative h-full p-4 flex flex-col justify-between">
+        <div>
+          <div className="text-xs text-red-400 font-semibold mb-1 uppercase tracking-wider">
+            Tópico
+          </div>
+          <h3 className="text-white font-bold text-sm sm:text-base leading-tight">
+            {card.name}
+          </h3>
+        </div>
+        {/* Hover Preview */}
+        <div className={`transition-all duration-300 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+          <p className="text-gray-300 text-xs line-clamp-2 mb-2">
+            {card.preview}
+          </p>
+          <div className="flex items-center gap-2">
+            <button className="flex items-center justify-center w-8 h-8 bg-white rounded-full hover:bg-gray-200 transition">
+              <svg className="w-4 h-4 text-black" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </button>
+            <button className="flex items-center justify-center w-8 h-8 bg-gray-700/80 rounded-full border-2 border-gray-500 hover:border-white transition">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+            <button className="flex items-center justify-center w-8 h-8 bg-gray-700/80 rounded-full border-2 border-gray-500 hover:border-white transition ml-auto">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Progress Bar */}
+      <ProgressBar progress={card.progress} />
+    </div>
+  );
+};
+// Carousel Row
+const CarouselRow = ({ module, onCardClick }) => {
+  const scrollRef = React.useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+  const checkScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 10);
+    }
+  };
+  React.useEffect(() => {
+    checkScroll();
+    const ref = scrollRef.current;
+    if (ref) {
+      ref.addEventListener('scroll', checkScroll);
+      return () => ref.removeEventListener('scroll', checkScroll);
+    }
+  }, []);
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = scrollRef.current.clientWidth * 0.8;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+  return (
+    <div className="mb-8 md:mb-12 group/row">
+      {/* Row Title */}
+      <div className="flex items-center gap-2 mb-3 md:mb-4 px-4 sm:px-6 lg:px-8">
+        <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+          {module.title}
+        </h2>
+        <div className="flex items-center text-red-400 text-sm font-medium opacity-0 group-hover/row:opacity-100 transition-opacity cursor-pointer">
+          <span>Explorar Todos</span>
+          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
+      </div>
+      {/* Carousel Container */}
+      <div className="relative">
+        {/* Left Arrow */}
+        <button
+          onClick={() => scroll('left')}
+          className={`absolute left-0 top-0 bottom-0 z-30 w-12 bg-gradient-to-r from-zinc-900 to-transparent flex items-center justify-center transition-opacity ${canScrollLeft ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <div className="w-10 h-10 bg-black/60 rounded-full flex items-center justify-center hover:bg-black/80 transition">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </div>
+        </button>
+        {/* Cards Container */}
+        <div
+          ref={scrollRef}
+          className="flex gap-2 md:gap-3 overflow-x-auto scrollbar-hide px-4 sm:px-6 lg:px-8 py-4"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {module.cards.map((card) => (
+            <Card key={card.id} card={card} onClick={onCardClick} />
+          ))}
+        </div>
+        {/* Right Arrow */}
+        <button
+          onClick={() => scroll('right')}
+          className={`absolute right-0 top-0 bottom-0 z-30 w-12 bg-gradient-to-l from-zinc-900 to-transparent flex items-center justify-center transition-opacity ${canScrollRight ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+        >
+          <div className="w-10 h-10 bg-black/60 rounded-full flex items-center justify-center hover:bg-black/80 transition">
+            <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  );
+};
+// Quiz Component
+const Quiz = ({ questions, onComplete }) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [score, setScore] = useState(0);
+  const [completed, setCompleted] = useState(false);
+  const handleAnswer = (index) => {
+    if (showFeedback) return;
+    setSelectedAnswer(index);
+    setShowFeedback(true);
+    if (index === questions[currentQuestion].correct) {
+      setScore(score + 1);
+    }
+  };
+  const nextQuestion = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setSelectedAnswer(null);
+      setShowFeedback(false);
+    } else {
+      setCompleted(true);
+      onComplete(score + (selectedAnswer === questions[currentQuestion].correct ? 1 : 0));
+    }
+  };
+  if (completed) {
+    const finalScore = score;
+    const percentage = Math.round((finalScore / questions.length) * 100);
+    
+    return (
+      <div className="text-center py-8">
+        <div className={`text-6xl mb-4 ${percentage >= 70 ? '🎉' : percentage >= 50 ? '📚' : '💪'}`}>
+          {percentage >= 70 ? '🎉' : percentage >= 50 ? '📚' : '💪'}
+        </div>
+        <h3 className="text-2xl font-bold text-white mb-2">
+          {percentage >= 70 ? 'Excelente!' : percentage >= 50 ? 'Bom trabalho!' : 'Continue estudando!'}
+        </h3>
+        <p className="text-gray-400 mb-4">
+          Você acertou {finalScore} de {questions.length} questões
+        </p>
+        <div className="w-full bg-gray-700 rounded-full h-4 mb-4">
+          <div 
+            className={`h-4 rounded-full transition-all duration-500 ${percentage >= 70 ? 'bg-green-500' : percentage >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`}
+            style={{ width: `${percentage}%` }}
+          />
+        </div>
+        <p className="text-3xl font-bold text-white">{percentage}%</p>
+      </div>
+    );
+  }
+  const question = questions[currentQuestion];
+  const isCorrect = selectedAnswer === question.correct;
+  return (
+    <div>
+      {/* Progress */}
+      <div className="flex gap-1 mb-6">
+        {questions.map((_, idx) => (
+          <div
+            key={idx}
+            className={`h-1 flex-1 rounded-full transition-colors ${idx < currentQuestion ? 'bg-green-500' : idx === currentQuestion ? 'bg-red-500' : 'bg-gray-600'}`}
+          />
+        ))}
+      </div>
+      {/* Question Number */}
+      <div className="text-gray-400 text-sm mb-2">
+        Questão {currentQuestion + 1} de {questions.length}
+      </div>
+      {/* Question */}
+      <h4 className="text-lg font-semibold text-white mb-6">
+        {question.question}
+      </h4>
+      {/* Options */}
+      <div className="space-y-3">
+        {question.options.map((option, index) => {
+          let buttonClass = 'w-full text-left p-4 rounded-lg border-2 transition-all ';
+          
+          if (showFeedback) {
+            if (index === question.correct) {
+              buttonClass += 'border-green-500 bg-green-500/20 text-white';
+            } else if (index === selectedAnswer && !isCorrect) {
+              buttonClass += 'border-red-500 bg-red-500/20 text-white';
+            } else {
+              buttonClass += 'border-gray-600 bg-gray-800/50 text-gray-400';
+            }
+          } else {
+            buttonClass += 'border-gray-600 bg-gray-800/50 text-white hover:border-gray-400 hover:bg-gray-700/50';
+          }
+          return (
+            <button
+              key={index}
+              onClick={() => handleAnswer(index)}
+              className={buttonClass}
+              disabled={showFeedback}
+            >
+              <div className="flex items-center gap-3">
+                <span className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-700 text-sm font-bold">
+                  {String.fromCharCode(65 + index)}
+                </span>
+                <span>{option}</span>
+                {showFeedback && index === question.correct && (
+                  <svg className="w-6 h-6 text-green-500 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+                {showFeedback && index === selectedAnswer && !isCorrect && (
+                  <svg className="w-6 h-6 text-red-500 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                )}
+              </div>
+            </button>
+          );
+        })}
+      </div>
+      {/* Feedback */}
+      {showFeedback && (
+        <div className={`mt-6 p-4 rounded-lg ${isCorrect ? 'bg-green-500/20 border border-green-500/50' : 'bg-red-500/20 border border-red-500/50'}`}>
+          <div className="flex items-center gap-2 mb-2">
+            {isCorrect ? (
+              <>
+                <svg className="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-green-400 font-semibold">Correto!</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="text-red-400 font-semibold">Incorreto</span>
+              </>
+            )}
+          </div>
+          <p className="text-gray-300 text-sm">
+            {isCorrect 
+              ? 'Muito bem! Continue assim!' 
+              : `A resposta correta é: ${question.options[question.correct]}`
+            }
+          </p>
+        </div>
+      )}
+      {/* Next Button */}
+      {showFeedback && (
+        <button
+          onClick={nextQuestion}
+          className="w-full mt-6 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors"
+        >
+          {currentQuestion < questions.length - 1 ? 'Próxima Questão' : 'Ver Resultado'}
+        </button>
+      )}
+    </div>
+  );
+};
+// Learning Modal
+const LearningModal = ({ card, onClose }) => {
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [quizScore, setQuizScore] = useState(0);
+  if (!card) return null;
+  const handleQuizComplete = (score) => {
+    setQuizCompleted(true);
+    setQuizScore(score);
+  };
+  return (
+    <div className="fixed inset-0 z-50 bg-black/95 overflow-y-auto">
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 z-50 w-12 h-12 bg-gray-800/80 hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors"
+      >
+        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div className="max-w-7xl mx-auto px-4 py-8 md:py-16">
+        <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Main Content Panel */}
+          <div className="lg:col-span-2">
+            {/* Header */}
+            <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 md:p-8 mb-6">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="px-3 py-1 bg-red-600/20 border border-red-600/50 text-red-400 text-sm font-semibold rounded-full">
+                  Fundamentos
+                </span>
+                <div className="flex items-center gap-1 text-yellow-400">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                  <span className="text-gray-400 text-sm ml-2">4.9</span>
+                </div>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-black text-white mb-4">
+                {card.name}
+              </h1>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                {card.content.summary}
+              </p>
+            </div>
+            {/* Key Points */}
+            <div className="bg-gray-800/50 rounded-2xl p-6 md:p-8 mb-6">
+              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                </svg>
+                Pontos-Chave
+              </h2>
+              <ul className="space-y-4">
+                {card.content.keyPoints.map((point, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                      {index + 1}
+                    </span>
+                    <span className="text-gray-300">{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            {/* Formula/Concept Box */}
+            <div className="bg-gradient-to-r from-red-900/30 to-orange-900/30 border border-red-500/30 rounded-2xl p-6 md:p-8">
+              <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                <svg className="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                Fórmula Fundamental
+              </h2>
+              <div className="bg-black/40 rounded-xl p-6 text-center">
+                <code className="text-xl md:text-2xl font-mono text-red-400 font-bold">
+                  {card.content.formula}
+                </code>
+              </div>
+            </div>
+            {/* Infographic Placeholder */}
+            <div className="mt-6 bg-gray-800/30 rounded-2xl p-8 border-2 border-dashed border-gray-700">
+              <div className="text-center">
+                <svg className="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2" />
+                </svg>
+                <h3 className="text-lg font-semibold text-gray-400 mb-2">Mapa Mental Interativo</h3>
+                <p className="text-gray-500 text-sm">Visualização gráfica do conceito em desenvolvimento</p>
+              </div>
+            </div>
+          </div>
+          {/* Quiz Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-8 bg-gray-800/80 rounded-2xl p-6 backdrop-blur-sm border border-gray-700">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-bold text-white flex items-center gap-2">
+                  <svg className="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Quiz Rápido
+                </h2>
+                {!quizCompleted && (
+                  <span className="text-sm text-gray-400">3 questões</span>
+                )}
+              </div>
+              <Quiz 
+                questions={card.quiz} 
+                onComplete={handleQuizComplete}
+              />
+              {quizCompleted && (
+                <button
+                  onClick={() => {
+                    setQuizCompleted(false);
+                    setQuizScore(0);
+                  }}
+                  className="w-full mt-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors"
+                >
+                  Tentar Novamente
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+// ==================== MAIN APP ====================
+function App() {
+  const [selectedCard, setSelectedCard] = useState(null);
+  return (
+    <div className="min-h-screen bg-zinc-900">
+      <Header />
+      
+      <main>
+        <HeroSection data={coursesData.hero} />
+        
+        {/* Module Carousels */}
+        <section className="py-8 -mt-20 relative z-20">
+          {coursesData.modules.map((module) => (
+            <CarouselRow 
+              key={module.id} 
+              module={module}
+              onCardClick={setSelectedCard}
+            />
+          ))}
+        </section>
+        {/* Footer */}
+        <footer className="bg-black/50 border-t border-gray-800 py-12 mt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              <div>
+                <h3 className="text-gray-400 text-sm font-semibold mb-4">Navegação</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Home</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Módulos</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Desempenho</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Simulados</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-gray-400 text-sm font-semibold mb-4">Recursos</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">FAQ</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Suporte</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Certificados</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-gray-400 text-sm font-semibold mb-4">Institucional</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Sobre</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Termos de Uso</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Privacidade</a></li>
+                </ul>
+              </div>
+              <div>
+                <h3 className="text-gray-400 text-sm font-semibold mb-4">Contato</h3>
+                <ul className="space-y-2">
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">Email</a></li>
+                  <li><a href="#" className="text-gray-500 hover:text-gray-300 text-sm">WhatsApp</a></li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-12 pt-8 border-t border-gray-800 text-center">
+              <div className="text-red-600 text-2xl font-black tracking-tighter mb-2">
+                CONTÁBIL<span className="text-white">FLIX</span>
+              </div>
+              <p className="text-gray-500 text-sm">
+                © 2024 ContábilFlix. Todos os direitos reservados.
+              </p>
+            </div>
+          </div>
+        </footer>
+      </main>
+      {/* Learning Modal */}
+      {selectedCard && (
+        <LearningModal 
+          card={selectedCard} 
+          onClose={() => setSelectedCard(null)} 
+        />
+      )}
+    </div>
+  );
+}
+export default App;
+html
+
+
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ContábilFlix - Fundamentos de Contabilidade</title>
+  <script src="[cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+  <style>
+    /* Custom scrollbar hide */
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    
+    /* Smooth animations */
+    * {
+      scroll-behavior: smooth;
+    }
+    
+    /* Line clamp utility */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+</head>
+<body class="bg-zinc-900">
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+</html>
+css
+
+
+/* src/index.css - Estilos adicionais */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(220, 38, 38, 0.6); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+/* Scrollbar styling for browsers that support it */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1f1f1f;
+}
+::-webkit-scrollbar-thumb {
+  background: #4a4a4a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #5a5a5a;
+}
+/* Selection color */
+::selection {
+  background: rgba(220, 38, 38, 0.5);
+  color: white;
+}
+/* Focus states */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #dc2626;
+  outline-offset: 2px;
+}
+/* Smooth transitions for all interactive elements */
+button, a, [role="button"] {
+  transition: all 0.2s ease;
+}
